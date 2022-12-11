@@ -1,12 +1,19 @@
 //bring in express
 const express = require('express')
+//bring in colors
+const colors = require('colors')
 //bring in the environment variable 
 const dotenv = require('dotenv').config()
 //get the errorHandler function from the errorMiddleware (then pass it into the app.use)
 const {errorHandler} = require('./middleware/errorMiddleware')
 //this is from the env file
 const PORT = process.env.PORT || 5000
+//get the connectDB function 
+const connectDB = require('./config/db')
 
+//Connect to databse
+connectDB()
+ 
 //initialise the app variable
 const app = express()
 

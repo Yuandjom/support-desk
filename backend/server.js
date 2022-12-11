@@ -18,5 +18,9 @@ app.get('/', (req, res) => {
     res.status(200).json({message: 'Welcome to the Support Desk API'})
 })
 
+//to use the route 
+//the end point is /api/users
+app.use('/api/users', require('./routes/userRoutes'))
+
 //listen to a specific port
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`))

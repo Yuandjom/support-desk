@@ -1,5 +1,5 @@
 //bring in mongoose
-const mongoose = require('mongoose')
+const mongoose = require('mongoose') //note that need to change mongodb url link in the env file to store to the desired db
 
 //function 
 const connectDB = async() => {

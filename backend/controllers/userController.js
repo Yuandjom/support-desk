@@ -1,5 +1,7 @@
 //this will handle all the try catch 
 const asyncHandler = require('express-async-handler')
+//bring in the jsonwebtoken
+const jwt = require('jsonwebtoken')
 //bring in bcrypt to hash the password 
 const bcrypt = require('bcryptjs') //note that when we require, it is bcryptjs
 //bring in the model 
@@ -50,7 +52,8 @@ const registerUser = asyncHandler(async(req, res) => {
             //use _id as that is how mongoDB stores their id
             _id: user._id, 
             name: user.name, 
-            email: user.email
+            email: user.email,
+            token: generateToken(user._id)//sign a token, pass in user.id
         })
     }else{
         res.status(400)
@@ -65,11 +68,52 @@ const registerUser = asyncHandler(async(req, res) => {
 // @route       /api/users/login
 // @access      Public
 const loginUser = asyncHandler(async(req, res) => {
-    res.send('Login Route')
+    //get the email and password from the body we send 
+    const {email, password} = req.body
+    //from the user model we findOne
+    const user = await User.findOne({email})
+    //if the user is found, Check user and passwords match
+    //compare the plain text password with the password hash
+    if(user && (await bcrypt.compare(password, user.password))){
+        res.status(200).json({
+            _id: user._id, 
+            name: user.name, 
+            email: user.email,
+            //make the routes protected. So you only can access the routes if u have the token 
+            token: generateToken(user._id)//sign a token, pass in user.id 
+        }) 
+    }else{ //this would be unauthorised
+        res.status(401)
+        throw new Error('Invalid credentials')
+    }
+
+    // res.send('Login Route')
 })
+// @desc Get current user
+// @route /api/users/me
+// @access Private
+const getMe = asyncHandler(async(req, res) => {
+    //send back 
+    const user = {
+        id: req.user._id, 
+        email: req.user.email, 
+        name: req.user.name, 
+    }
+    res.status(200).json(user)
+})//remember that after u create the function, you have to export it
+
+
+
+// Generate token 
+const generateToken = (id) => {
+    return jwt.sign({id}, process.env.JWT_SECRET,{
+        expiresIn: '30d'
+    }) //pass in the object with the id
+}
 
 //once you export, remember to bring it in to the userRoutes file 
 module.exports = {
     registerUser, 
-    loginUser
+    loginUser, 
+    getMe
 }

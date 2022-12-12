@@ -13,8 +13,8 @@ const connectDB = require('./config/db')
 
 //Connect to databse
 connectDB()
- 
-//initialise the app variable
+
+//initialise the app variable from express
 const app = express()
 
 //this is the middleware to have the body parser

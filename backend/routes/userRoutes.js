@@ -6,7 +6,7 @@ const {registerUser, loginUser} = require('../controllers/userController')
 // router.post('/', (req, res) => {
 //     res.send('Register Route')
 // })
-router.post('/', registerUser)
+router.post('/', registerUser) //POST carries quest parameter in message body 
 
 // router.post('/login', (req, res) => {
 //     res.send('Login Route')

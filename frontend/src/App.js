@@ -1,4 +1,5 @@
 import React from 'react';
+//set up the routes
 
 function App() {
   return (

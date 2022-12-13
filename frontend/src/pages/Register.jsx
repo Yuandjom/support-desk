@@ -3,7 +3,10 @@ import { useState } from 'react'
 import { FaUser } from 'react-icons/fa'
 //for the password verification 
 import { toast } from 'react-toastify' //inorder for this to show, we need to add in the app.js 
-
+//bring in two hooks 
+import { useSelector, useDispatch } from 'react-redux'
+//bring in the register function
+import { register } from '../features/auth/authSlice'
 
 function Register() {
     //this is to initialise the formdata object
@@ -15,6 +18,14 @@ function Register() {
     })
     //destruture the formdata
     const { name, email, password, password2 } = formData
+
+    const dispatch = useDispatch() //dispatch register and any other functions we have 
+
+    //useSelector bring in pieces of our state. This would mathc whatever we put for our state
+    //these are from the authSlice
+    //basically this is bring any piece of the global state into a componenet by using useSelector
+    const { user, isLoading, isSuccess, message } = useSelector(state => state.auth)
+
 
     const onChange = (e) => {
         setFormData((prevState) => ({
@@ -30,6 +41,16 @@ function Register() {
 
         if (password !== password2) {
             toast.error("Passwords do not match")
+        } else {
+            //if the password match
+            //creating the userData
+            const userData = {
+                name,
+                email,
+                password
+            }
+            //this is dispatching the register from the authSlice
+            dispatch(register(userData))
         }
     }
 

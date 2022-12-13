@@ -1,12 +1,13 @@
 import React from 'react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { FaUser } from 'react-icons/fa'
 //for the password verification 
 import { toast } from 'react-toastify' //inorder for this to show, we need to add in the app.js 
 //bring in two hooks 
 import { useSelector, useDispatch } from 'react-redux'
 //bring in the register function
-import { register } from '../features/auth/authSlice'
+import { register, reset } from '../features/auth/authSlice'
 
 function Register() {
     //this is to initialise the formdata object
@@ -20,12 +21,27 @@ function Register() {
     const { name, email, password, password2 } = formData
 
     const dispatch = useDispatch() //dispatch register and any other functions we have 
+    const navigate = useNavigate()
 
     //useSelector bring in pieces of our state. This would mathc whatever we put for our state
     //these are from the authSlice
     //basically this is bring any piece of the global state into a componenet by using useSelector
-    const { user, isLoading, isSuccess, message } = useSelector(state => state.auth)
+    const { user, isLoading, isError, isSuccess, message } = useSelector(state => state.auth)
 
+    useEffect(() => {
+        //we are bringing in all the state
+        if (isError) {
+            //the message here will be set in redux and we are grabbing it through the selector
+            toast.error(message)
+        }
+
+        //Redirect when logged in 
+        if (isSuccess || user) {
+            //if success just go to the home page
+            navigate('/')
+        }
+        dispatch(reset())
+    }, [isError, isSuccess, user, message, navigate, dispatch])
 
     const onChange = (e) => {
         setFormData((prevState) => ({

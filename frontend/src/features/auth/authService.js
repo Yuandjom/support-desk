@@ -2,7 +2,7 @@
 import axios from 'axios'
 
 //we are dealing with the auth stuff, so /api/users is the end point 
-const API_URL = '/api/users'
+const API_URL = '/api/users/'
 
 // Register user
 const register = async(userData) => {
@@ -19,10 +19,26 @@ const register = async(userData) => {
     return response.data
 }
 
+//logout user
+const logout = () => localStorage.removeItem('user')
+
+// login the user (remember to export it at the end) 
+const login = async(userData) => {
+    const response = await axios.post(API_URL + 'login', userData)
+    if(response.data){
+        //save the json web token 
+        //need to use stringify as localStorage only holds string
+        localStorage.setItem('user', JSON.stringify(response.data))
+    }
+    //this will be the user data and token 
+    return response.data
+}
 //make sure we export this 
 //any function that is put in here we can export it 
 const authService = {
-    register
+    register, 
+    logout,
+    login,
 }
 
 //export and bring it to authSlice

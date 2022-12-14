@@ -8,6 +8,7 @@ import { toast } from 'react-toastify' //inorder for this to show, we need to ad
 import { useSelector, useDispatch } from 'react-redux'
 //bring in the register function
 import { register, reset } from '../features/auth/authSlice'
+import Spinner from '../components/Spinner'
 
 function Register() {
     //this is to initialise the formdata object
@@ -70,6 +71,9 @@ function Register() {
         }
     }
 
+    if (isLoading) {
+        return <Spinner />
+    }
     //note that the type in the input is the type of value to be entered
     return (
         <>

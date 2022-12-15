@@ -8,7 +8,7 @@ import authService from './authService'
 const user = JSON.parse(localStorage.getItem('user'))
 
 //create out initialState 
-//this will be an object 
+//this will be an object which is like the GLOBAL state
 const initialState = {
     //if there is a user then use it, else Null
     user: user? user: null, 

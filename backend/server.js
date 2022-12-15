@@ -34,6 +34,8 @@ app.get('/', (req, res) => {
 //to use the route 
 //the end point is /api/users
 app.use('/api/users', require('./routes/userRoutes'))
+//the end point is /api/tickets
+app.use('/api/tickets', require('./routes/ticketRoutes'))
 
 app.use(errorHandler) //this wont show in production, only show in development
 

@@ -20,6 +20,27 @@ const initialState = {
     isLoading: false, 
     message: ''
 }
+//Create new ticket
+export const createTicket = createAsyncThunk('tickets/create', async(ticketData, thunkAPI) => {
+    //do a try catch
+    try {
+        //the reason why we need the token is because this is a protected route
+        //get the token using thunkAPI
+        const token = thunkAPI.getState().auth.user.token
+        //the service will create a ticket from the ticketdata
+        return await ticketService.createTicket(ticketData, token) //passing the data to the service
+    } catch (error) {
+        //if something goes wrong, we want to get the message from the backend 
+        //get the message from the backend by creating a variable
+        const message = (error.response && error.response.data && 
+            error.response.data.message) || error.message || error.toString()
+
+        //this means if sth went wrong, if we have the message, we want to pass the message in 
+        //rejectWithValue
+        return thunkAPI.rejectWithValue(message)
+
+    }
+})
 
 export const ticketSlice = createSlice({
     name: 'ticket', 
@@ -28,7 +49,19 @@ export const ticketSlice = createSlice({
         reset: (state) => initialState
     },
     extraReducers: (builder) => {
-
+        builder
+            .addCase(createTicket.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(createTicket.fulfilled, (state) => {
+                state.isLoading = false
+                state.isSuccess = true
+            })
+            .addCase(createTicket.rejected, (state, action) => {
+                state.isLoading = false
+                state.isError = true
+                state.message = action.payload
+            })
     }
 })
 

@@ -47,12 +47,29 @@ const getTicket = async(ticketId,token) => {
     const response = await axios.get(API_URL + ticketId, config)
 
     return response.data
+
 }
+//Close ticket
+const closeTicket = async(ticketId,token) => {
+    //create the config
+    const config = {
+        //note that when we send the token, it must be in headers, in the authorisation field
+        headers: {
+            //this is handled in the middleware
+            Authorization: `Bearer ${token}`
+        }
+    }
+    //we are making a put request to the API_URL, second argument is data and we are adding object
+    const response = await axios.put(API_URL + ticketId,{status: 'closed'} ,config)
+
+    return response.data
+} 
 
 const ticketService = {
     createTicket, 
     getTickets,
     getTicket,
+    closeTicket,//after export, remember to go back to the slice and handle the reducer
 }
 
 export default ticketService

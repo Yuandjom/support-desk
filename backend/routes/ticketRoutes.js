@@ -8,6 +8,11 @@ const {getTickets, getTicket,createTicket, deleteTicket, updateTicket} = require
 //get the protect function from middleware
 const {protect}  = require('../middleware/authMiddleware')
 
+// Re-route into note router
+const noteRouter = require('./noteRoutes')
+//we want this to pertain to the noteRouter
+router.use('/:ticketId/notes', noteRouter)
+
 //chaining get and post in this one route
 //in order to get your tickets you have to be autheticated
 router.route('/').get(protect, getTickets).post(protect, createTicket)

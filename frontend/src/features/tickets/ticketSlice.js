@@ -64,6 +64,28 @@ export const getTickets = createAsyncThunk('tickets/getAll', async(_, thunkAPI) 
     }
 })
 
+//Get user ticket
+export const getTicket = createAsyncThunk('tickets/get', async(ticketId, thunkAPI) => {
+    //do a try catch
+    try {
+        //the reason why we need the token is because this is a protected route
+        //get the token using thunkAPI
+        const token = thunkAPI.getState().auth.user.token
+        //the service will get tickets using the token 
+        return await ticketService.getTicket( ticketId,token)
+    } catch (error) {
+        //if something goes wrong, we want to get the message from the backend 
+        //get the message from the backend by creating a variable
+        const message = (error.response && error.response.data && 
+            error.response.data.message) || error.message || error.toString()
+
+        //this means if sth went wrong, if we have the message, we want to pass the message in 
+        //rejectWithValue
+        return thunkAPI.rejectWithValue(message)
+
+    }
+})
+
 export const ticketSlice = createSlice({
     name: 'ticket', 
     initialState, 
@@ -93,6 +115,19 @@ export const ticketSlice = createSlice({
                 state.tickets = action.payload
             })
             .addCase(getTickets.rejected, (state, action) => {
+                state.isLoading = false
+                state.isError = true
+                state.message = action.payload
+            })
+            .addCase(getTicket.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(getTicket.fulfilled, (state, action) => { //note that for fufilled we are getting data, so we need to pass in an action 
+                state.isLoading = false
+                state.isSuccess = true
+                state.ticket = action.payload
+            })
+            .addCase(getTicket.rejected, (state, action) => {
                 state.isLoading = false
                 state.isError = true
                 state.message = action.payload

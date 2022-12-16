@@ -13,7 +13,7 @@ function NewTicket() {
     //before setting the local state, we are getting the user from the global state
     const { user } = useSelector((state) => state.auth)
     //useSelector from the ticket state not the auth
-    const { isLoading, isError, isSuccess, message } = useSelector((state) => state.ticket)
+    const { isLoading, isError, isSuccess, message } = useSelector((state) => state.tickets) //note that state.tickets is from store.js 
 
     //initialise the dispatch
     const dispatch = useDispatch()

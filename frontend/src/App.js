@@ -11,6 +11,7 @@ import NewTicket from './pages/NewTicket';
 import Register from './pages/Register';
 import Header from './components/Header';
 import PrivateRoute from './components/PrivateRoute';
+import Tickets from './pages/Tickets'; //note that this is also a protected route
 
 
 function App() {
@@ -25,7 +26,9 @@ function App() {
             <Route path='/register' element={<Register />}></Route>
             <Route path='/new-ticket' element={<PrivateRoute />}>
               <Route path='/new-ticket' element={<NewTicket />}></Route>
-
+            </Route>
+            <Route path='/tickets' element={<PrivateRoute />}>
+              <Route path='/tickets' element={<Tickets />}></Route>
             </Route>
         </Routes>
       </div>

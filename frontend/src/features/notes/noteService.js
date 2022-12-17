@@ -1,7 +1,7 @@
 import axios from "axios";
 
 //this is the root URL
-const API_URL = 'api/tickets/'
+const API_URL = '/api/tickets/'
 
 //get ticket notes
 const getNotes = async(ticketId,token) => {

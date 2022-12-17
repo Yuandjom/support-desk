@@ -5,7 +5,7 @@ import { FaPlus } from 'react-icons/fa'
 import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useParams, useNavigate } from 'react-router-dom'
-import { getNotes, reset as notesReset } from '../features/notes/noteSlice'
+import { getNotes, createNote, reset as notesReset } from '../features/notes/noteSlice'
 //get the getTicket and reset function 
 import { getTicket, closeTicket } from '../features/tickets/ticketSlice'
 import BackButton from '../components/BackButton'
@@ -64,7 +64,9 @@ function Ticket() {
     // Create note submit
     const onNoteSubmit = (e) => {
         e.preventDefault()
-        console.log('Submit')
+        //create Note need to be dispatched
+        //noteText comes from the form
+        dispatch(createNote({ noteText, ticketId }))
         closeModal()
     }
 

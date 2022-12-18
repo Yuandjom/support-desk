@@ -5,7 +5,7 @@ const mongoose = require('mongoose') //note that need to change mongodb url link
 const connectDB = async() => {
     try {
         //establish a connect and return a promise 
-        const conn = await mongoose.connect(process.env.MONGO_URI)
+        const conn = await mongoose.connect(process.env.MONGO_URL)
         //give the mongoDB host that we are connected to 
         //the colors package allow for cyan.underline
         console.log(`MongoDB Connected: ${conn.connection.host}`.cyan.underline);

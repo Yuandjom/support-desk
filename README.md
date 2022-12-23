@@ -5,7 +5,6 @@ https://support-desk-john.netlify.app/
 * [General info](#general-info)
 * [Technologies](#technologies)
 * [Setup](#setup)
-* [Features](#features)
 * [Sources](#sources)
 
 ## General info
